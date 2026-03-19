@@ -12,6 +12,7 @@
 | Overview | [#overview](#overview) |
 | Setup | [#setup](#setup) |
 | Usage | [#usage](#usage) |
+| Deployment | [#deployment](#deployment) |
 | Visuals | [#visuals](#visuals) |
 | FAQ | [#faq](#faq) |
 | Notes | [#notes](#notes) |
@@ -67,6 +68,43 @@ npm run preview   # serve the production bundle locally
 ### Health checks & verification
 - Run `npm run build` and `npm run preview` to confirm the production bundle renders without TypeScript errors.
 - There are no automated tests yet, so lint/build are the primary checks before shipping.
+
+<a id="deployment"></a>
+## Deployment
+1. Install the deploy helper: `npm install --save-dev gh-pages`.
+2. Update `vite.config.ts` with the repo’s base path so assets resolve on GitHub Pages (replace `your-github-repo` with your actual repo slug):
+
+```ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+const repoName = 'shopping-cart'
+
+export default defineConfig({
+  base:
+    process.env.NODE_ENV === 'production' ? `/${repoName}/` : '/',
+  plugins: [
+    react({
+      babel: {
+        plugins: [['babel-plugin-react-compiler']],
+      },
+    }),
+  ],
+})
+```
+
+3. Add deploy scripts and (optionally) a `homepage` field to `package.json`:
+
+```json
+"homepage": "https://<your-github-username>.github.io/<your-repo-name>",
+"scripts": {
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d dist",
+  ...
+}
+```
+
+4. Push the repo to GitHub, then run `npm run deploy`. The `gh-pages` package will publish `dist/` to the `gh-pages` branch, and GitHub Pages will serve it from `https://<your-github-username>.github.io/<your-repo-name>/`. Verify the settings under the repository’s “Pages” section in GitHub so the branch + folder are correct.
 
 <a id="visuals"></a>
 ## Visuals
