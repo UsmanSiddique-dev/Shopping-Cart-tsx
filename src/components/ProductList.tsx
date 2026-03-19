@@ -2,8 +2,8 @@ import { type ReactElement } from "react";
 import useCart from "../hooks/useCart";
 import useProducts from "../hooks/useProducts";
 
-import { type UseProductsContextType } from "../context/ProductsProvider";
-import { Product } from "./Product";
+// import { type UseProductsContextType } from "../context/ProductsProvider";
+import Product from "./Product";
 function ProductList() {
   const { dispatch, REDUCER_ACTIONS, cart } = useCart();
   const { products } = useProducts();
@@ -23,12 +23,7 @@ function ProductList() {
       );
     });
   }
-  const content = (
-    <main className="main main--products">
-      
-      {pageContent}
-    </main>
-  );
+  const content = <main className="main main--products">{pageContent}</main>;
   return content;
 }
 
